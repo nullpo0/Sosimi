@@ -32,6 +32,19 @@ class _SimulatorWidgetState extends State<SimulatorWidget> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _model = createModel(context, () => HomePageModel());
+  }
+
+  @override
+  void dispose() {
+    _model.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
@@ -61,7 +74,7 @@ class _SimulatorWidgetState extends State<SimulatorWidget> {
                     width: 240,
                     height: 96,
                     decoration: BoxDecoration(
-                      color: Color(0xFFB7B7B7),
+                      color: Color(0xFFA6C57D),
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(30),
                         bottomRight: Radius.circular(30),
@@ -100,7 +113,7 @@ class _SimulatorWidgetState extends State<SimulatorWidget> {
                     width: 240,
                     height: 96,
                     decoration: BoxDecoration(
-                      color: Color(0xFFB7B7B7),
+                      color: Color(0xFFA6C57D),
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(30),
                         bottomRight: Radius.circular(30),
@@ -139,7 +152,7 @@ class _SimulatorWidgetState extends State<SimulatorWidget> {
                     width: 240,
                     height: 96,
                     decoration: BoxDecoration(
-                      color: Color(0xFFB7B7B7),
+                      color: Color(0xFFA6C57D),
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(30),
                         bottomRight: Radius.circular(30),
@@ -188,7 +201,7 @@ class _SimulatorWidgetState extends State<SimulatorWidget> {
                     width: 240,
                     height: 96,
                     decoration: BoxDecoration(
-                      color: Color(0xFFB7B7B7),
+                      color: Color(0xFFA6C57D),
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(30),
                         bottomRight: Radius.circular(30),
@@ -251,7 +264,7 @@ class _SimulatorWidgetState extends State<SimulatorWidget> {
                     height: 21,
                     padding: EdgeInsets.all(0),
                     iconPadding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-                    color: Color(0xFF6B6B6B),
+                    color: Color(0xFF79964E),
                     textStyle: FlutterFlowTheme.of(context).titleSmall.override(
                       fontFamily: 'Readex Pro',
                       color: Colors.white,
