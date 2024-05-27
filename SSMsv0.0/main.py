@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from LLM import models
 from fuct import choice
 from gemini import model
 from fastapi.middleware.cors import CORSMiddleware
@@ -21,18 +22,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# gemini ai 모델
-gemini_model = model.model
-
-# 생성 멘트 딕셔너리(서버)
-genMent = {}
-
 # 키워드 생성 모델
 class Keyword(BaseModel):
     k1: str
     k2: str
     k3: str
     k4: str
+    k5: str
+    k6: str
+    k7: str
 
 # GET
 @app.get("/")
@@ -40,15 +38,9 @@ async def home():
     return "기프랩 소심이"
 
 
-@app.get("/genMent")
-async def getMent():
-    return genMent["user_name"]
-
-
 # POST
 @app.post("/{category}")
-async def toPrompt(category, kw: Keyword):
-    response = gemini_model.generate_content(choice.choice(category, kw.k1, kw.k2, kw.k3, kw.k4))
-    genMent["user_name"] = response.text
-    print(response.text)
-    return response.text
+async def postAndResponse(category, kw: Keyword):
+    response = models.requestAPI(choice.choice(category, kw.k1, kw.k2, kw.k3, kw.k4, kw.k5, kw.k6, kw.k7))
+    print(response)
+    return response
