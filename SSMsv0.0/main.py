@@ -1,9 +1,7 @@
 from pydantic import BaseModel
 from LLM import models
-from fuct import choice
-from gemini import model
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
 
 
 # 서버 구동 : 터미널창에서 uvicorn main:app --reload 입력
@@ -39,7 +37,7 @@ async def home():
 
 
 # POST
-@app.post("/{category}")
+@app.post("/sttSimulation")
 async def postAndResponse(category, kw: Keyword):
     response = models.requestAPI(choice.choice(category, kw.k1, kw.k2, kw.k3, kw.k4, kw.k5, kw.k6, kw.k7))
     print(response)
