@@ -1,8 +1,9 @@
+import os
+from fuct import userData
+from LLM import createPrompt, models
 from pydantic import BaseModel
-from LLM import models
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, File, UploadFile
-
 
 # 서버 구동 : 터미널창에서 uvicorn main:app --reload 입력
 
@@ -21,14 +22,19 @@ app.add_middleware(
 )
 
 # 키워드 생성 모델
-class Keyword(BaseModel):
-    k1: str
-    k2: str
-    k3: str
-    k4: str
-    k5: str
-    k6: str
-    k7: str
+class Data(BaseModel):
+    d1: str
+    d2: str
+    d3: str
+    d4: str
+    d5: str
+    d6: str
+    d7: str
+
+class Script(BaseModel):
+    slide: str
+    script: str
+
 
 # GET
 @app.get("/")
@@ -37,8 +43,34 @@ async def home():
 
 
 # POST
-@app.post("/sttSimulation")
-async def postAndResponse(category, kw: Keyword):
-    response = models.requestAPI(choice.choice(category, kw.k1, kw.k2, kw.k3, kw.k4, kw.k5, kw.k6, kw.k7))
-    print(response)
-    return response
+@app.post("/uploadppt")
+async def upload_ppt(file: UploadFile):
+    ppt_dir = "./assets/ppt"
+
+    content = await file.read()
+    filename = "ppt.pptx"
+    with open(os.path.join(ppt_dir, filename), "wb") as fp:
+        fp.write(content)
+
+    return {"file": file.filename}
+
+@app.post("/uploadmp4")
+async def upload_mp4(file: UploadFile):
+    mp4_dir = "./assets/mp4"
+
+    content = await file.read()
+    filename = "speech.mp4"
+    with open(os.path.join(mp4_dir, filename), "wb") as fp:
+        fp.write(content)
+
+    return {"file": file.filename}
+
+@app.post("/postData")
+async def postData(data : Data):
+    userData.writeUserData(data.d1, data.d2, data.d3, data.d4)
+    models.dataModel(createPrompt.infoPrompt(data.d5, data.d6, data.d7))
+    return {"state": "success"}
+
+@app.post("/postScript")
+async def postScript(script: Script):
+    return models.scriptModel(createPrompt.scriptPrompt(script.slide, script.script))
